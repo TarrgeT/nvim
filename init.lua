@@ -91,8 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
-
+vim.g.have_nerd_font = true
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
@@ -298,7 +297,7 @@ require('lazy').setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-  { -- Useful plugin to show you pending keybinds.
+  {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -379,7 +378,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -487,7 +486,7 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',    opts = {} },
 
       -- Allows extra capabilities provided by blink.cmp
       'saghen/blink.cmp',
@@ -881,21 +880,50 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
+    'xero/evangelion.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
-        },
-      }
-
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme 'evangelion'
     end,
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
+    opts = {
+      options = {
+        -- this is all you need
+        theme = "evangelion",
+
+        -- everything below
+        -- is extra style
+        -- can't help myself :P
+        component_separators = { left = "░", right = "░" },
+        section_separators = { left = "▓▒░", right = "░▒▓" },
+      },
+      sections = {
+        lualine_b = {
+          "branch", {
+          "diagnostics",
+          sources = { "nvim_diagnostic" },
+          symbols = { error = " ", warn = " ", info = " " },
+          diagnostics_color = {
+            error = { fg = "#151515" },
+            warn = { fg = "#151515" },
+            info = { fg = "#151515" },
+          },
+        },
+        },
+        lualine_x = {
+          { "encoding", padding = { left = 1, right = 1 }, separator = { left = "░▒▓" } },
+          { "fileformat" },
+          { "filetype" },
+        },
+        lualine_y = { "searchcount", "progress" },
+      },
+    },
   },
 
   -- Highlight todo, notes, etc in comments
@@ -937,6 +965,40 @@ require('lazy').setup({
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
+  },
+  {
+    'goolord/alpha-nvim',
+    config = function()
+      local alpha = require 'alpha'
+      local dashboard = require 'alpha.themes.dashboard'
+      dashboard.section.header.type = "text"
+      dashboard.section.header.val = {
+        [[                                                                         ]],
+        [[                               :                                         ]],
+        [[ L.                     ,;    t#,                                        ]],
+        [[ EW:        ,ft       f#i    ;##W.              t                        ]],
+        [[ E##;       t#E     .E#t    :#L:WE              Ej            ..       : ]],
+        [[ E###t      t#E    i#W,    .KG  ,#D  t      .DD.E#,          ,W,     .Et ]],
+        [[ E#fE#f     t#E   L#D.     EE    ;#f EK:   ,WK. E#t         t##,    ,W#t ]],
+        [[ E#t D#G    t#E :K#Wfff;  f#.     t#iE#t  i#D   E#t        L###,   j###t ]],
+        [[ E#t  f#E.  t#E i##WLLLLt :#G     GK E#t j#f    E#t      .E#j##,  G#fE#t ]],
+        [[ E#t   t#K: t#E  .E#L      ;#L   LW. E#tL#i     E#t     ;WW; ##,:K#i E#t ]],
+        [[ E#t    ;#W,t#E    f#E:     t#f f#:  E#WW,      E#t    j#E.  ##f#W,  E#t ]],
+        [[ E#t     :K#D#E     ,WW;     f#D#;   E#K:       E#t  .D#L    ###K:   E#t ]],
+        [[ E#t      .E##E      .D#;     G#t    ED.        E#t :K#t     ##D.    E#t ]],
+        [[ ..         G#E        tt      t     t          E#t ...      #G      ..  ]],
+        [[             fE                                 ,;.          j           ]],
+        [[              ,                                                          ]],
+        [[                                                                         ]],
+      }
+      dashboard.section.buttons.val = {
+        dashboard.button("e", "  New File", "<cmd>ene <CR>"),
+        dashboard.button("SPC s f", "󰈞  Find File"),
+        dashboard.button("q", "× Quit NVIM", ":qa<CR>")
+
+      }
+      alpha.setup(dashboard.config)
+    end
   },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
