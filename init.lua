@@ -880,13 +880,19 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'xero/evangelion.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
+    "xero/evangelion.nvim",
+    branch = "dev",
+    dependencies = {
+      "rktjmp/lush.nvim",
+      "rktjmp/shipwright.nvim",
+    },
+    lazy = false,
+    priority = 1000,
     config = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'evangelion'
+      require("evangelion").setup({
+        transparent = false,
+      })
+      vim.cmd.colorscheme("evangelion")
     end,
   },
   {
@@ -972,30 +978,32 @@ require('lazy').setup({
       local alpha = require 'alpha'
       local dashboard = require 'alpha.themes.dashboard'
       dashboard.section.header.type = "text"
-      dashboard.section.header.val = {
-        [[                                                                         ]],
-        [[                               :                                         ]],
-        [[ L.                     ,;    t#,                                        ]],
-        [[ EW:        ,ft       f#i    ;##W.              t                        ]],
-        [[ E##;       t#E     .E#t    :#L:WE              Ej            ..       : ]],
-        [[ E###t      t#E    i#W,    .KG  ,#D  t      .DD.E#,          ,W,     .Et ]],
-        [[ E#fE#f     t#E   L#D.     EE    ;#f EK:   ,WK. E#t         t##,    ,W#t ]],
-        [[ E#t D#G    t#E :K#Wfff;  f#.     t#iE#t  i#D   E#t        L###,   j###t ]],
-        [[ E#t  f#E.  t#E i##WLLLLt :#G     GK E#t j#f    E#t      .E#j##,  G#fE#t ]],
-        [[ E#t   t#K: t#E  .E#L      ;#L   LW. E#tL#i     E#t     ;WW; ##,:K#i E#t ]],
-        [[ E#t    ;#W,t#E    f#E:     t#f f#:  E#WW,      E#t    j#E.  ##f#W,  E#t ]],
-        [[ E#t     :K#D#E     ,WW;     f#D#;   E#K:       E#t  .D#L    ###K:   E#t ]],
-        [[ E#t      .E##E      .D#;     G#t    ED.        E#t :K#t     ##D.    E#t ]],
-        [[ ..         G#E        tt      t     t          E#t ...      #G      ..  ]],
-        [[             fE                                 ,;.          j           ]],
-        [[              ,                                                          ]],
-        [[                                                                         ]],
-      }
+      local logo = [[
+___      ___                 ____    ____
+`MM\     `M'                 `Mb(     )d' 68b
+ MMM\     M                   YM.     ,P  Y89
+ M\MM\    M   ____     _____  `Mb     d'  ___ ___  __    __
+ M \MM\   M  6MMMMb   6MMMMMb  YM.   ,P   `MM `MM 6MMb  6MMb
+ M  \MM\  M 6M'  `Mb 6M'   `Mb `Mb   d'    MM  MM69 `MM69 `Mb
+ M   \MM\ M MM    MM MM     MM  YM. ,P     MM  MM'   MM'   MM
+ M    \MM\M MMMMMMMM MM     MM  `Mb d'     MM  MM    MM    MM
+ M     \MMM MM       MM     MM   YM,P      MM  MM    MM    MM
+ M      \MM YM    d9 YM.   ,M9   `MM'      MM  MM    MM    MM
+_M_      \M  YMMMM9   YMMMMM9     YP      _MM__MM_  _MM_  _MM_
+          ]]
+
+      dashboard.section.header.val = vim.split(logo, "\n")
+
       dashboard.section.buttons.val = {
         dashboard.button("e", "  New File", "<cmd>ene <CR>"),
-        dashboard.button("SPC s f", "󰈞  Find File"),
-        dashboard.button("q", "× Quit NVIM", ":qa<CR>")
+        dashboard.button("f", "󰈞  Find File", "<cmd>Telescope find_files<CR>"),
+        dashboard.button("r", "󱈖  Recently Opened Files", "<cmd>Telescope oldfiles<CR>"),
+        dashboard.button("q", "  Quit NVIM", ":qa<CR>")
 
+      }
+      local lazy_stats = require("lazy").stats()
+      dashboard.section.footer.val = {
+        "Congratulations!",
       }
       alpha.setup(dashboard.config)
     end
