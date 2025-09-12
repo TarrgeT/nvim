@@ -211,7 +211,7 @@ require('lazy').setup({
   -- Then, because we use the `opts` key (recommended), the configuration runs
   -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
 
-  {                     -- Useful plugin to show you pending keybinds.
+  { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
@@ -292,7 +292,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -400,7 +400,7 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim',    opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
 
       -- Allows extra capabilities provided by blink.cmp
       'saghen/blink.cmp',
@@ -794,54 +794,55 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    "xero/evangelion.nvim",
-    branch = "dev",
+    'xero/evangelion.nvim',
+    branch = 'dev',
     dependencies = {
-      "rktjmp/lush.nvim",
-      "rktjmp/shipwright.nvim",
+      'rktjmp/lush.nvim',
+      'rktjmp/shipwright.nvim',
     },
     lazy = false,
     priority = 1000,
     config = function()
-      require("evangelion").setup({
+      require('evangelion').setup {
         transparent = false,
-      })
-      vim.cmd.colorscheme("evangelion")
+      }
+      vim.cmd.colorscheme 'evangelion'
     end,
   },
   {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
+    'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
     opts = {
       options = {
         -- this is all you need
-        theme = "evangelion",
+        theme = 'evangelion',
 
         -- everything below
         -- is extra style
         -- can't help myself :P
-        component_separators = { left = "░", right = "░" },
-        section_separators = { left = "▓▒░", right = "░▒▓" },
+        component_separators = { left = '░', right = '░' },
+        section_separators = { left = '▓▒░', right = '░▒▓' },
       },
       sections = {
         lualine_b = {
-          "branch", {
-          "diagnostics",
-          sources = { "nvim_diagnostic" },
-          symbols = { error = " ", warn = " ", info = " " },
-          diagnostics_color = {
-            error = { fg = "#151515" },
-            warn = { fg = "#151515" },
-            info = { fg = "#151515" },
+          'branch',
+          {
+            'diagnostics',
+            sources = { 'nvim_diagnostic' },
+            symbols = { error = ' ', warn = ' ', info = ' ' },
+            diagnostics_color = {
+              error = { fg = '#151515' },
+              warn = { fg = '#151515' },
+              info = { fg = '#151515' },
+            },
           },
         },
-        },
         lualine_x = {
-          { "encoding", padding = { left = 1, right = 1 }, separator = { left = "░▒▓" } },
-          { "fileformat" },
-          { "filetype" },
+          { 'encoding', padding = { left = 1, right = 1 }, separator = { left = '░▒▓' } },
+          { 'fileformat' },
+          { 'filetype' },
         },
-        lualine_y = { "searchcount", "progress" },
+        lualine_y = { 'searchcount', 'progress' },
       },
     },
   },
@@ -891,7 +892,7 @@ require('lazy').setup({
     config = function()
       local alpha = require 'alpha'
       local dashboard = require 'alpha.themes.dashboard'
-      dashboard.section.header.type = "text"
+      dashboard.section.header.type = 'text'
       local logo = [[
 ___      ___                 ____    ____
 `MM\     `M'                 `Mb(     )d' 68b
@@ -906,21 +907,20 @@ ___      ___                 ____    ____
 _M_      \M  YMMMM9   YMMMMM9     YP      _MM__MM_  _MM_  _MM_
           ]]
 
-      dashboard.section.header.val = vim.split(logo, "\n")
+      dashboard.section.header.val = vim.split(logo, '\n')
 
       dashboard.section.buttons.val = {
-        dashboard.button("e", "  New File", "<cmd>ene <CR>"),
-        dashboard.button("f", "󰈞  Find File", "<cmd>Telescope find_files<CR>"),
-        dashboard.button("r", "󱈖  Recently Opened Files", "<cmd>Telescope oldfiles<CR>"),
-        dashboard.button("q", "  Quit NVIM", ":qa<CR>")
-
+        dashboard.button('e', '  New File', '<cmd>ene <CR>'),
+        dashboard.button('f', '󰈞  Find File', '<cmd>Telescope find_files<CR>'),
+        dashboard.button('r', '󱈖  Recently Opened Files', '<cmd>Telescope oldfiles<CR>'),
+        dashboard.button('q', '  Quit NVIM', ':qa<CR>'),
       }
-      local lazy_stats = require("lazy").stats()
+      local lazy_stats = require('lazy').stats()
       dashboard.section.footer.val = {
-        "Congratulations!",
+        'Congratulations!',
       }
       alpha.setup(dashboard.config)
-    end
+    end,
   },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
