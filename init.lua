@@ -166,7 +166,8 @@ rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
-
+  require 'plugins.nvim-tree',
+  require 'plugins.evangelion-theme',
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -793,27 +794,6 @@ require('lazy').setup({
       signature = { enabled = true },
     },
   },
-
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'xero/evangelion.nvim',
-    branch = 'dev',
-    dependencies = {
-      'rktjmp/lush.nvim',
-      'rktjmp/shipwright.nvim',
-    },
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require('evangelion').setup {
-        transparent = false,
-      }
-      vim.cmd.colorscheme 'evangelion'
-    end,
-  },
   {
     'nvim-lualine/lualine.nvim',
     event = 'VeryLazy',
@@ -898,27 +878,25 @@ require('lazy').setup({
       local alpha = require 'alpha'
       local dashboard = require 'alpha.themes.dashboard'
       dashboard.section.header.type = 'text'
-      local logo = [[
-___      ___                 ____    ____
-`MM\     `M'                 `Mb(     )d' 68b
- MMM\     M                   YM.     ,P  Y89
- M\MM\    M   ____     _____  `Mb     d'  ___ ___  __    __
- M \MM\   M  6MMMMb   6MMMMMb  YM.   ,P   `MM `MM 6MMb  6MMb
- M  \MM\  M 6M'  `Mb 6M'   `Mb `Mb   d'    MM  MM69 `MM69 `Mb
- M   \MM\ M MM    MM MM     MM  YM. ,P     MM  MM'   MM'   MM
- M    \MM\M MMMMMMMM MM     MM  `Mb d'     MM  MM    MM    MM
- M     \MMM MM       MM     MM   YM,P      MM  MM    MM    MM
- M      \MM YM    d9 YM.   ,M9   `MM'      MM  MM    MM    MM
-_M_      \M  YMMMM9   YMMMMM9     YP      _MM__MM_  _MM_  _MM_
-          ]]
-
-      dashboard.section.header.val = vim.split(logo, '\n')
-
+      dashboard.section.header.val = {
+        [[                                   ]],
+        [[  ▐ ▄ ▄▄▄ .       ▌ ▐·▪  • ▌ ▄ ·.  ]],
+        [[ •█▌▐█▀▄.▀·▪     ▪█·█▌██ ·██ ▐███▪ ]],
+        [[ ▐█▐▐▌▐▀▀▪▄ ▄█▀▄ ▐█▐█•▐█·▐█ ▌▐▌▐█· ]],
+        [[ ██▐█▌▐█▄▄▌▐█▌.▐▌ ███ ▐█▌██ ██▌▐█▌ ]],
+        [[ ▀▀ █▪ ▀▀▀  ▀█▄▀▪. ▀  ▀▀▀▀▀  █▪▀▀▀ ]],
+        [[                                   ]],
+      }
       dashboard.section.buttons.val = {
-        dashboard.button('e', '  New File', '<cmd>ene <CR>'),
-        dashboard.button('f', '󰈞  Find File', '<cmd>Telescope find_files<CR>'),
-        dashboard.button('r', '󱈖  Recently Opened Files', '<cmd>Telescope oldfiles<CR>'),
-        dashboard.button('q', '  Quit NVIM', ':qa<CR>'),
+        dashboard.button('e', '  New file', ':ene <BAR> startinsert <CR>'),
+        dashboard.button('f', '󰍉  Find file', ":lua require('fzf-lua').files() <CR>"),
+        dashboard.button('t', '  Browse cwd', ':NvimTreeOpen<CR>'),
+        dashboard.button('r', '  Browse src', ':e ~/.local/src/<CR>'),
+        dashboard.button('s', '󰯂  Browse scripts', ':e ~/scripts/<CR>'),
+        dashboard.button('c', '  Config', ':e ~/.config/nvim/<CR>'),
+        dashboard.button('m', '  Mappings', ':e ~/.config/nvim/lua/config/mappings.lua<CR>'),
+        dashboard.button('p', '  Plugins', ':PlugInstall<CR>'),
+        dashboard.button('q', '󰅙  Quit', ':q!<CR>'),
       }
       local lazy_stats = require('lazy').stats()
       dashboard.section.footer.val = {
