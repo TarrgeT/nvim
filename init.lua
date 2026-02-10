@@ -137,6 +137,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- mappings
+require 'config.mappings'
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -168,13 +171,13 @@ require('lazy').setup({
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
   require 'plugins.nvim-tree',
   require 'plugins.evangelion-theme',
+  require 'plugins.alpha-nvim',
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
   --
   -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded.
   --
-
   -- Alternatively, use `config = function() ... end` for full control over the configuration.
   -- If you prefer to call `setup` explicitly, use:
   --    {
@@ -259,13 +262,6 @@ require('lazy').setup({
           F11 = '<F11>',
           F12 = '<F12>',
         },
-      },
-
-      -- Document existing key chains
-      spec = {
-        { '<leader>s', group = '[S]earch' },
-        { '<leader>t', group = '[T]oggle' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       },
     },
   },
@@ -538,7 +534,7 @@ require('lazy').setup({
           --
           -- This may be unwanted, since they displace some of your code
           if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-            map('<leader>th', function()
+            map('<leader>hh', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
           end
@@ -872,39 +868,7 @@ require('lazy').setup({
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
-  {
-    'goolord/alpha-nvim',
-    config = function()
-      local alpha = require 'alpha'
-      local dashboard = require 'alpha.themes.dashboard'
-      dashboard.section.header.type = 'text'
-      dashboard.section.header.val = {
-        [[                                   ]],
-        [[  ▐ ▄ ▄▄▄ .       ▌ ▐·▪  • ▌ ▄ ·.  ]],
-        [[ •█▌▐█▀▄.▀·▪     ▪█·█▌██ ·██ ▐███▪ ]],
-        [[ ▐█▐▐▌▐▀▀▪▄ ▄█▀▄ ▐█▐█•▐█·▐█ ▌▐▌▐█· ]],
-        [[ ██▐█▌▐█▄▄▌▐█▌.▐▌ ███ ▐█▌██ ██▌▐█▌ ]],
-        [[ ▀▀ █▪ ▀▀▀  ▀█▄▀▪. ▀  ▀▀▀▀▀  █▪▀▀▀ ]],
-        [[                                   ]],
-      }
-      dashboard.section.buttons.val = {
-        dashboard.button('e', '  New file', ':ene <BAR> startinsert <CR>'),
-        dashboard.button('f', '󰍉  Find file', ":lua require('fzf-lua').files() <CR>"),
-        dashboard.button('t', '  Browse cwd', ':NvimTreeOpen<CR>'),
-        dashboard.button('r', '  Browse src', ':e ~/.local/src/<CR>'),
-        dashboard.button('s', '󰯂  Browse scripts', ':e ~/scripts/<CR>'),
-        dashboard.button('c', '  Config', ':e ~/.config/nvim/<CR>'),
-        dashboard.button('m', '  Mappings', ':e ~/.config/nvim/lua/config/mappings.lua<CR>'),
-        dashboard.button('p', '  Plugins', ':PlugInstall<CR>'),
-        dashboard.button('q', '󰅙  Quit', ':q!<CR>'),
-      }
-      local lazy_stats = require('lazy').stats()
-      dashboard.section.footer.val = {
-        'Congratulations!',
-      }
-      alpha.setup(dashboard.config)
-    end,
-  },
+
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
