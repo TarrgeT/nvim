@@ -3,6 +3,9 @@ local function map(m, k, v)
 end
 
 map('', '<SPACE>', '<Nop>')
+map('v', '<Tab>', '>gv')
+map('v', '<S-Tab>', '<gv')
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
